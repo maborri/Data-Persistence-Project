@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainManager : MonoBehaviour
-{
+public class MainManager : MonoBehaviour {
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
@@ -18,10 +15,8 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    
-    // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        ScoreText.text = NameManager.Instance.username + $" score: {m_Points}";
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -38,8 +33,7 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
+    private void Update() {
         if (!m_Started)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -62,14 +56,15 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    void AddPoint(int point)
-    {
+    void AddPoint(int point) {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = NameManager.Instance.username + $" score: {m_Points}";
     }
 
-    public void GameOver()
-    {
+    public void GameOver() {
+         if (m_Points > NameManager.Instance.highscore.value) {
+            NameManager.Instance.SaveHighscore(m_Points);
+        }
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
